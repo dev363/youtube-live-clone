@@ -1,25 +1,24 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Broadcaster</title>
+    <title>Viewer</title>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div class="container">
       <div class="video-section">
-        <video playsinline autoplay></video>
+        <video playsinline autoplay muted></video>
       </div>
       <div class="button-section">
         <p>Total Viewers: <span id="viewerCount">0</span></p>
         <div>
-          <button id="startStream">Start Stream</button>
-          <button id="stopStream" disabled>Stop Stream</button>
+          <button id="enable-audio">Unmute</button>
         </div>
       </div>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/broadcast.js"></script>
+    <script src="/watch.js"></script>
   </body>
 </html>

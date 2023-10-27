@@ -25,7 +25,6 @@ socket.on("watcher", (id) => {
   peerConnections[id] = peerConnection;
 
   let stream = videoElement.srcObject;
-  console.log(peerConnection, 999);
   stream.getTracks().forEach((track) => peerConnection.addTrack(track, stream));
 
   peerConnection.onicecandidate = (event) => {
@@ -48,7 +47,6 @@ socket.on("candidate", (id, candidate) => {
   peerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
 });
 socket.on("viewrsCount", (count) => {
-  console.log(count, 88888);
   viewerCount.textContent = count;
 });
 
@@ -59,7 +57,7 @@ socket.on("disconnectPeer", (id) => {
 
 function updateViewerCount() {
   const count = Object.keys(peerConnections).length;
-  console.log(count, 77777);
+
   viewerCount.textContent = count;
   socket.emit("watcherCount", count);
 }
@@ -71,8 +69,8 @@ window.onunload = window.onbeforeunload = () => {
 // Get camera and microphone
 const videoElement = document.querySelector("video");
 const viewerCount = document.querySelector("#viewerCount");
-
-getStream();
+const startStreamBtn = document.querySelector("#startStream");
+const stopStreamBtn = document.querySelector("#stopStream");
 
 function getStream() {
   if (window.stream) {
@@ -100,3 +98,18 @@ function gotStream(stream) {
 function handleError(error) {
   console.error("Error: ", error);
 }
+startStreamBtn.addEventListener("click", (e) => {
+  getStream();
+  startStreamBtn.setAttribute("disabled", true);
+  stopStreamBtn.removeAttribute("disabled");
+});
+stopStreamBtn.addEventListener("click", () => {
+  if (window.stream) {
+    window.stream.getTracks().forEach((track) => {
+      track.stop();
+    });
+    startStreamBtn.removeAttribute("disabled");
+    stopStreamBtn.setAttribute("disabled", true);
+    videoElement.srcObject = null;
+  }
+});

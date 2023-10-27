@@ -61,6 +61,7 @@ window.onunload = window.onbeforeunload = () => {
 };
 
 function enableAudio() {
-  console.log("Enabling audio");
-  video.muted = false;
+  console.log("Enabling audio", video.muted);
+  enableAudioButton.textContent = video.muted ? "Mute" : "Unmute";
+  video.muted = !video.muted;
 }
